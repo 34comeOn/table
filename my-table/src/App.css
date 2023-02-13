@@ -1,5 +1,5 @@
 .App {
-  background-color: #282c34;
+  background-color: #aab9d8;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -7,4 +7,5 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding: 15px 0;
 }
