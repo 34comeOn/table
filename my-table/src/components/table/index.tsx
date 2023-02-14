@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Table, Typography, Modal } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import './style.css';
+import { setTransferedDate } from '../../utils/utils';
 
 const { Text } = Typography;
 
-interface DataType {
+export interface DataType {
   key: string;
   name: string;
   quantity: number;
@@ -79,38 +80,52 @@ const columns: ColumnsType<DataType> = [
   },
 ];
 
-const data: DataType[] = [
-  {
-    key: '1',
-    name: 'Tent',
-    quantity: 1,
-    deliveryDate: '20.02.2023',
-    price: 10000,
-    currency: 'RUB',
-  },
-  {
-    key: '2',
-    name: 'Map',
-    quantity: 1,
-    deliveryDate: '18.02.2023',
-    price: 10,
-    currency: 'USD',
-  },
-  {
-    key: '3',
-    name: 'Pot',
-    quantity: 3,
-    deliveryDate: '21.02.2023',
-    price: 17,
-    currency: 'USD',
-  },
-];
-
 let currentSelectedRows: DataType[] = [];
 
 export const AppTable = () => {
     const [isDisabled, setIsDisabled] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [data, setData] = useState<DataType[]>([]);
+    const [loading, setLoading] = useState(false);
+
+
+    const fetchData = () => {
+        setLoading(true);
+        fetch('http://localhost:9001/documents1')
+        .then(res => res.json())
+        .then(
+          (result: DataType[]) => {
+            setTransferedDate(result);
+            // for(let item of result) {
+            //     let itemDate = new Date(item.deliveryDate);
+            //     item.deliveryDate = `${itemDate.getFullYear()}-${itemDate.getMonth()}-${itemDate.getDate()}`
+            //     console.log(item.deliveryDate)
+            // }
+            setData(result)
+            setLoading(false);          
+          },
+          (error) => {
+            console.log(error)
+          }
+        )
+
+        fetch('http://localhost:9001/documents2')
+        .then(res => res.json())
+        .then(
+          (result: DataType[]) => {
+            setTransferedDate(result);
+            setData((prevData) => [...prevData, ...result]);
+            setLoading(false);          
+          },
+          (error) => {
+            console.log(error)
+          }
+        )
+      };
+    
+      useEffect(() => {
+        fetchData();
+      }, []);
 
     const rowSelection = {
         onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
@@ -124,7 +139,7 @@ export const AppTable = () => {
 
     const showModal = () => {
         setIsModalOpen(true);
-      };
+    };
     
     const handleOk = () => {
     setIsModalOpen(false);
@@ -144,7 +159,7 @@ export const AppTable = () => {
         columns={columns}
         dataSource={data}
         bordered
-
+        loading={loading}
 
         summary={(pageData) => {
             let totalQuantity = 0;
