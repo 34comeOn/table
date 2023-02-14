@@ -1,6 +1,7 @@
-import React from 'react';
-import { Table, Typography } from 'antd';
+import React, { useState } from 'react';
+import { Button, Table, Typography, Modal } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import './style.css';
 
 const { Text } = Typography;
 
@@ -17,22 +18,64 @@ const columns: ColumnsType<DataType> = [
   {
     title: 'Name',
     dataIndex: 'name',
+    sorter: (a, b) => {
+        let A = a.name.toUpperCase();
+        let B = b.name.toUpperCase();
+        
+        if (A < B) {
+            return -1;
+          }
+          if (A > B) {
+            return 1;
+          }
+          return 0;
+    },
   },
   {
     title: 'Quantity',
     dataIndex: 'quantity',
+    sorter: (a, b) => a.quantity - b.quantity,
   },
   {
     title: 'Delivery date',
     dataIndex: 'deliveryDate',
+    defaultSortOrder: 'ascend',
+    sorter: (a, b) => {
+        let A = new Date(a.deliveryDate.split('.').reverse().join('-')).getTime();
+        let B = new Date(b.deliveryDate.split('.').reverse().join('-')).getTime();
+
+        if (A < B) {
+            return -1;
+          }
+          if (A > B) {
+            return 1;
+          }
+          return 0;
+    },
   },
   {
     title: 'Price',
     dataIndex: 'price',
+    sorter: {
+        compare:(a, b) => a.price - b.price,
+        multiple: 1,
+    }
   },
   {
     title: 'Currency',
     dataIndex: 'currency',
+    sorter: {
+        compare: (a, b) => {
+        if (a.currency < b.currency) {
+            return -1;
+          }
+          if (a.currency > b.currency) {
+            return 1;
+          }
+          return 0;
+        },  
+        multiple: 2,
+    },
   },
 ];
 
@@ -63,19 +106,36 @@ const data: DataType[] = [
   },
 ];
 
-// rowSelection object indicates the need for row selection
-const rowSelection = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-  },
-  getCheckboxProps: (record: DataType) => ({
-    name: record.name,
-  }),
-};
+let currentSelectedRows: DataType[] = [];
 
 export const AppTable = () => {
+    const [isDisabled, setIsDisabled] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const rowSelection = {
+        onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+          currentSelectedRows = selectedRows;
+          selectedRows.length>0? setIsDisabled(false):setIsDisabled(true);
+        },
+        getCheckboxProps: (record: DataType) => ({
+          name: record.name,
+        }),
+      };
+
+    const showModal = () => {
+        setIsModalOpen(true);
+      };
+    
+    const handleOk = () => {
+    setIsModalOpen(false);
+    };
+    
+    const handleCancel = () => {
+    setIsModalOpen(false);
+    };
 
   return (
+    <>
       <Table
         rowSelection={{
           type: 'checkbox',
@@ -83,7 +143,6 @@ export const AppTable = () => {
         }}
         columns={columns}
         dataSource={data}
-        pagination={false}
         bordered
 
 
@@ -106,6 +165,36 @@ export const AppTable = () => {
               </>
             );
         }}
-      />
+        />
+        <>
+            <Button 
+            className='annul-button'
+            type="primary" 
+            onClick={showModal} 
+            disabled={isDisabled}
+            >
+                Аннулировать
+            </Button>
+            <Modal
+            open={isModalOpen}
+            title=""
+            onOk={handleOk}
+            onCancel={handleCancel}
+            footer={[
+            <Button key="back" onClick={handleCancel}>
+                Отклонить
+            </Button>,
+            <Button key="submit" type="primary" onClick={handleOk}>
+                Применить
+            </Button>,
+            ]}
+            >
+                <p>Вы уверены, что хотите аннулировать 
+                    товар{currentSelectedRows.length>1?'ы: ':': '} 
+                    {currentSelectedRows.map(item=> item.name).join(', ')}
+                    ?</p>
+            </Modal>
+        </>
+    </>
   );
 };
