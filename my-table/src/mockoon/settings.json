@@ -1,0 +1,26 @@
+{
+  "welcomeShown": true,
+  "bannerDismissed": [],
+  "logSizeLimit": 10000,
+  "maxLogsPerEnvironment": 50,
+  "truncateRouteName": true,
+  "mainMenuSize": 100,
+  "secondaryMenuSize": 200,
+  "fakerLocale": "en",
+  "fakerSeed": null,
+  "lastChangelog": "1.22.0",
+  "environments": [
+    {
+      "uuid": "cf65ed05-29de-477b-a619-99cbbcd57e6a",
+      "path": "/Users/mikhailbarabanov/Library/Application Support/mockoon/storage/demo.json"
+    },
+    {
+      "uuid": "ddcfe401-747a-46fc-8130-1f21328d36b7",
+      "path": "/Users/mikhailbarabanov/Library/Application Support/mockoon/storage/table.json"
+    }
+  ],
+  "enableTelemetry": true,
+  "storagePrettyPrint": true,
+  "fileWatcherEnabled": "disabled",
+  "dialogWorkingDir": "/Users/mikhailbarabanov/Library/Application Support/mockoon/storage"
+}
