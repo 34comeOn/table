@@ -1,0 +1,151 @@
+{
+  "uuid": "ddcfe401-747a-46fc-8130-1f21328d36b7",
+  "lastMigration": 25,
+  "name": "Table",
+  "endpointPrefix": "",
+  "latency": 2000,
+  "port": 9001,
+  "hostname": "0.0.0.0",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "9765b704-2035-441b-a0ad-4fa1e969d165",
+      "documentation": "documents 1 for table",
+      "method": "get",
+      "endpoint": "documents1",
+      "responses": [
+        {
+          "uuid": "15396cc3-b6f3-486c-a578-4a56632e2315",
+          "body": "[\n  {{#repeat 7}}\n  {\n    \"key\": \"{{guid}}\",\n    \"name\": \"{{faker 'vehicle.manufacturer'}}\",\n    \"quantity\": {{faker 'datatype.number' min=1 max=5}},\n    \"deliveryDate\": \"{{faker 'date.future'}}\",\n    \"price\": {{faker 'datatype.number' min=150 max=25000}},\n    \"currency\": \"USD\"\n  },\n  {{/repeat}}\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": true,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "f88ad43a-ccd9-4052-853a-726847234a2f",
+      "documentation": "documents 2 for table",
+      "method": "get",
+      "endpoint": "documents2",
+      "responses": [
+        {
+          "uuid": "b2b06bc3-46aa-4129-9752-c65444d3bdb3",
+          "body": "[\n  {{#repeat 6}}\n  {\n    \"key\": \"{{guid}}\",\n    \"name\": \"{{faker 'vehicle.manufacturer'}}\",\n    \"quantity\": {{faker 'datatype.number' min=1 max=5}},\n    \"deliveryDate\": \"{{faker 'date.future'}}\",\n    \"price\": {{faker 'datatype.number' min=150000 max=2500000}},\n    \"currency\": \"RUB\"\n  },\n  {{/repeat}}\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": true,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "aeb50faa-0b27-4c42-a009-90fd34cb45db",
+      "documentation": "",
+      "method": "delete",
+      "endpoint": "cancel",
+      "responses": [
+        {
+          "uuid": "da63f6d5-f493-4e5d-bbf7-41b1ba058f05",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "9765b704-2035-441b-a0ad-4fa1e969d165"
+    },
+    {
+      "type": "route",
+      "uuid": "f88ad43a-ccd9-4052-853a-726847234a2f"
+    },
+    {
+      "type": "route",
+      "uuid": "aeb50faa-0b27-4c42-a009-90fd34cb45db"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    },
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "*"
+    },
+    {
+      "key": "Access-Control-Allow-Methods",
+      "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+    },
+    {
+      "key": "Access-Control-Allow-Headers",
+      "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": []
+}
